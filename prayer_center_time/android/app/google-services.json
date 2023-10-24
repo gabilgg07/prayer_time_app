@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "846836614762",
+    "project_id": "prayercentertime",
+    "storage_bucket": "prayercentertime.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846836614762:android:bb61d087413bd3f058ec13",
+        "android_client_info": {
+          "package_name": "com.prayer_center_time"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIq79wDoGBGJhr90lEfkXI09rDm5vUpII"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
