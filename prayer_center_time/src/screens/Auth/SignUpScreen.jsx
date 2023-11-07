@@ -7,13 +7,17 @@ import {
   Button,
   TouchableOpacity,
   ScrollView,
+  useColorScheme,
 } from 'react-native';
 import {AuthContext} from '../../routers/AuthProvider';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import {COLORS} from '../../utils/Colors';
+import styles from './styles';
 
 const SignUpScreen = ({navigation}) => {
+  const isDarkMode = useColorScheme() === 'dark';
   const [isSecurePass, setIsSecurePass] = useState(true);
   const [isSecurePassConfirm, setIsSecurePassConfirm] = useState(true);
 
@@ -21,61 +25,68 @@ const SignUpScreen = ({navigation}) => {
   const signupValidationSchema = yup.object().shape({
     firstname: yup
       .string()
-      .required('Boş geçilemez')
-      .min(3, ({min}) => 'Adınız en az ' + min + ' karakter olmalıdır!'),
+      .required('Boş buraxıla bilməz')
+      .min(3, ({min}) => 'Adınız ən az ' + min + ' xarakter olmalıdır!'),
     lastname: yup
       .string()
-      .required('Boş geçilemez')
-      .min(3, ({min}) => 'Soyadınız en az ' + min + ' karakter olmalıdır!'),
+      .required('Boş buraxıla bilməz')
+      .min(3, ({min}) => 'Soyadınız ən az ' + min + ' xarakter olmalıdır!'),
     username: yup
       .string()
-      .required('Boş geçilemez')
+      .required('Boş buraxıla bilməz')
       .min(
         6,
-        ({min}) => 'Kullanıcı adınız en az ' + min + ' karakter olmalıdır!',
+        ({min}) => 'İstifadəçi adınız ən az ' + min + ' xarakter olmalıdır!',
       ),
     phone: yup
       .string()
-      .required('Boş geçilemez')
+      .required('Boş buraxıla bilməz')
       .length(
         9,
         ({length}) =>
-          'Telefon numaranızın uzunluğu ' + length + ' karakter olmalıdır!',
+          'Telefon nömrənizin uzunluğu ' + length + ' xarakter olmalıdır!',
       ),
     email: yup
       .string()
-      .required('Boş geçilemez')
-      .email('Geçerli bir email adresi giriniz!'),
+      .required('Boş buraxıla bilməz')
+      .email('Düzgün e-poçt adresi daxil edin!'),
     password: yup
       .string()
-      .required('Boş geçilemez')
-      .min(6, ({min}) => 'Şifre en az ' + min + ' karakter olmalıdır!')
-      .matches(/\w*[A-Z]\w*/, 'En az 1 adet büyük harf kullanmalısınız!')
-      .matches(/\w*[a-z]\w*/, 'En az 1 adet küçük harf kullanmalısınız!')
-      .matches(/\d/, 'En az 1 adet rakam kullanmalısınız!')
+      .required('Boş buraxıla bilməz')
+      .min(6, ({min}) => 'Şifrə ən az ' + min + ' xarakter olmalıdır!')
+      .matches(/\w*[A-Z]\w*/, 'Ən az 1 ədəd böyük hərf istifadə etməlisiniz!')
+      .matches(/\w*[a-z]\w*/, 'Ən az 1 ədəd kiçik hərf istifadə etməlisiniz!')
+      .matches(/\d/, 'Ən az 1 ədəd rəqəm istifadə etməlisiniz!')
       .matches(
         /[!@#$%^&*()\-_"=+{}; :,<.>]/,
-        'En az 1 adet özel karakter kullanmalısınız!',
+        'Ən az 1 ədəd özəl xarakter istifadə etməlisiniz!',
       ),
     passwordConfirm: yup
       .string()
-      .required('Boş geçilemez')
-      .oneOf([yup.ref('password')], 'Şifreler uyumsuz'),
+      .required('Boş buraxıla bilməz')
+      .oneOf([yup.ref('password')], 'Şifrələr eyni deyil!'),
   });
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: isDarkMode ? COLORS.darkColor : COLORS.lightColor,
+      }}>
       <ScrollView style={{flex: 1, width: '100%'}}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={styles.container}>
           <View
-            style={{
-              width: '80%',
-              alignItems: 'center',
-              padding: 5,
-              backgroundColor: '#333',
-              borderRadius: 30,
-              paddingVertical: 15,
-            }}>
-            <Text style={{fontSize: 24}}>Yeni Üye Kaydı</Text>
+            style={[
+              styles.formWrapper,
+              {
+                backgroundColor: isDarkMode
+                  ? COLORS.darkColor90
+                  : COLORS.whiteColor,
+                borderColor: isDarkMode
+                  ? COLORS.lightColor200
+                  : COLORS.darkColor200,
+              },
+            ]}>
+            <Text style={styles.formTitle}>Qeydiyyat</Text>
             <Formik
               validationSchema={signupValidationSchema}
               initialValues={{
@@ -110,148 +121,130 @@ const SignUpScreen = ({navigation}) => {
                   <TextInput
                     name="firstname"
                     placeholder="Adınız"
-                    style={{
-                      height: 50,
-                      width: '90%',
-                      padding: 10,
-                      margin: 10,
-                      borderColor: '#000',
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      fontSize: 16,
-                      backgroundColor: '#fff',
-                    }}
+                    placeholderTextColor={
+                      isDarkMode ? COLORS.darkColor300 : COLORS.lightColor300
+                    }
+                    style={[
+                      styles.formInput,
+                      {
+                        color: isDarkMode
+                          ? COLORS.lightColor100
+                          : COLORS.darkColor100,
+                      },
+                    ]}
                     onChangeText={handleChange('firstname')}
                     onBlur={handleBlur('firstname')}
                     value={values.firstname}
                   />
                   {errors.firstname && (
-                    <Text style={{color: '#f00', fontSize: 14}}>
-                      {errors.firstname}
-                    </Text>
+                    <Text style={styles.inputError}>{errors.firstname}</Text>
                   )}
 
                   <TextInput
                     name="lastname"
                     placeholder="Soyadınız"
-                    style={{
-                      height: 50,
-                      width: '90%',
-                      padding: 10,
-                      margin: 10,
-                      borderColor: '#000',
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      fontSize: 16,
-                      backgroundColor: '#fff',
-                    }}
+                    placeholderTextColor={
+                      isDarkMode ? COLORS.darkColor300 : COLORS.lightColor300
+                    }
+                    style={[
+                      styles.formInput,
+                      {
+                        color: isDarkMode
+                          ? COLORS.lightColor100
+                          : COLORS.darkColor100,
+                      },
+                    ]}
                     onChangeText={handleChange('lastname')}
                     onBlur={handleBlur('lastname')}
                     value={values.lastname}
                   />
                   {errors.lastname && (
-                    <Text style={{color: '#f00', fontSize: 14}}>
-                      {errors.lastname}
-                    </Text>
+                    <Text style={styles.inputError}>{errors.lastname}</Text>
                   )}
 
                   <TextInput
                     name="username"
-                    placeholder="Kullanıcı adınız"
-                    style={{
-                      height: 50,
-                      width: '90%',
-                      padding: 10,
-                      margin: 10,
-                      borderColor: '#000',
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      fontSize: 16,
-                      backgroundColor: '#fff',
-                    }}
+                    placeholder="İstifadəçi adınız"
+                    placeholderTextColor={
+                      isDarkMode ? COLORS.darkColor300 : COLORS.lightColor300
+                    }
+                    style={[
+                      styles.formInput,
+                      {
+                        color: isDarkMode
+                          ? COLORS.lightColor100
+                          : COLORS.darkColor100,
+                      },
+                    ]}
                     onChangeText={handleChange('username')}
                     onBlur={handleBlur('username')}
                     value={values.username}
                   />
                   {errors.username && (
-                    <Text style={{color: '#f00', fontSize: 14}}>
-                      {errors.username}
-                    </Text>
+                    <Text style={styles.inputError}>{errors.username}</Text>
                   )}
 
                   <TextInput
                     name="phone"
-                    placeholder="Telefon (Örnek: 123456789)"
-                    style={{
-                      height: 50,
-                      width: '90%',
-                      padding: 10,
-                      margin: 10,
-                      borderColor: '#000',
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      fontSize: 16,
-                      backgroundColor: '#fff',
-                    }}
+                    placeholder="Telefon (Nümunə: 123456789)"
+                    placeholderTextColor={
+                      isDarkMode ? COLORS.darkColor300 : COLORS.lightColor300
+                    }
+                    style={[
+                      styles.formInput,
+                      {
+                        color: isDarkMode
+                          ? COLORS.lightColor100
+                          : COLORS.darkColor100,
+                      },
+                    ]}
                     onChangeText={handleChange('phone')}
                     onBlur={handleBlur('phone')}
                     value={values.phone}
                     keyboardType="phone-pad"
                   />
                   {errors.phone && (
-                    <Text style={{color: '#f00', fontSize: 14}}>
-                      {errors.phone}
-                    </Text>
+                    <Text style={styles.inputError}>{errors.phone}</Text>
                   )}
 
                   <TextInput
                     name="email"
-                    placeholder="Email Adresiniz"
-                    style={{
-                      height: 50,
-                      width: '90%',
-                      padding: 10,
-                      margin: 10,
-                      borderColor: '#000',
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      fontSize: 16,
-                      backgroundColor: '#fff',
-                    }}
+                    placeholder="E-poçt ünvanınız"
+                    placeholderTextColor={
+                      isDarkMode ? COLORS.darkColor300 : COLORS.lightColor300
+                    }
+                    style={[
+                      styles.formInput,
+                      {
+                        color: isDarkMode
+                          ? COLORS.lightColor100
+                          : COLORS.darkColor100,
+                      },
+                    ]}
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     value={values.email}
                     keyboardType="email-address"
                   />
                   {errors.email && (
-                    <Text style={{color: '#f00', fontSize: 14}}>
-                      {errors.email}
-                    </Text>
+                    <Text style={styles.inputError}>{errors.email}</Text>
                   )}
 
-                  <View
-                    style={{
-                      borderColor: '#000',
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      width: '90%',
-                      flexDirection: 'row',
-                      margin: 10,
-                      paddingHorizontal: 5,
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}>
+                  <View style={styles.inputBox}>
                     <TextInput
                       name="password"
-                      placeholder="Şifreniz"
-                      style={{
-                        height: 50,
-                        width: '70%',
-                        borderWidth: 0,
-                        fontSize: 16,
-                        backgroundColor: '#fff',
-                        color: '#000',
-                      }}
+                      placeholder="Şifrəniz"
+                      placeholderTextColor={
+                        isDarkMode ? COLORS.darkColor300 : COLORS.lightColor300
+                      }
+                      style={[
+                        styles.inputInBox,
+                        {
+                          color: isDarkMode
+                            ? COLORS.lightColor100
+                            : COLORS.darkColor100,
+                        },
+                      ]}
                       onChangeText={handleChange('password')}
                       onBlur={handleBlur('password')}
                       value={values.password}
@@ -269,34 +262,24 @@ const SignUpScreen = ({navigation}) => {
                     </TouchableOpacity>
                   </View>
                   {errors.password && (
-                    <Text style={{color: '#f00', fontSize: 14}}>
-                      {errors.password}
-                    </Text>
+                    <Text style={styles.inputError}>{errors.password}</Text>
                   )}
 
-                  <View
-                    style={{
-                      borderColor: '#000',
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      width: '90%',
-                      flexDirection: 'row',
-                      margin: 10,
-                      paddingHorizontal: 5,
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}>
+                  <View style={styles.inputBox}>
                     <TextInput
                       name="passwordConfirm"
-                      placeholder="Şifre Doğrulama"
-                      style={{
-                        height: 50,
-                        width: '70%',
-                        borderWidth: 0,
-                        fontSize: 16,
-                        backgroundColor: '#fff',
-                        color: '#000',
-                      }}
+                      placeholder="Şifrə təsdiqləmə"
+                      placeholderTextColor={
+                        isDarkMode ? COLORS.darkColor300 : COLORS.lightColor300
+                      }
+                      style={[
+                        styles.inputInBox,
+                        {
+                          color: isDarkMode
+                            ? COLORS.lightColor100
+                            : COLORS.darkColor100,
+                        },
+                      ]}
                       onChangeText={handleChange('passwordConfirm')}
                       onBlur={handleBlur('passwordConfirm')}
                       value={values.passwordConfirm}
@@ -316,17 +299,39 @@ const SignUpScreen = ({navigation}) => {
                     </TouchableOpacity>
                   </View>
                   {errors.passwordConfirm && (
-                    <Text style={{color: '#f00', fontSize: 14}}>
+                    <Text style={styles.inputError}>
                       {errors.passwordConfirm}
                     </Text>
                   )}
+
                   <View style={{width: '50%'}}>
-                    <Button
-                      color="#f00"
+                    <TouchableOpacity
                       onPress={handleSubmit}
                       disabled={!isValid}
-                      title="Kaydet"
-                    />
+                      style={{
+                        backgroundColor: isValid
+                          ? COLORS.mainColor
+                          : isDarkMode
+                          ? COLORS.darkGray
+                          : 'lightgray',
+                        marginTop: 15,
+                        padding: 10,
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          fontSize: 20,
+                          fontWeight: 'bold',
+                          color: isValid
+                            ? COLORS.whiteColor
+                            : isDarkMode
+                            ? 'gray'
+                            : 'darkgray',
+                        }}>
+                        Yadda saxla
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </>
               )}

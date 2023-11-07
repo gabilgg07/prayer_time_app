@@ -9,6 +9,7 @@ export const COLORS = {
 
   // dark colors
   darkColor: '#070400',
+  darkColor90: '#301901',
   darkColor100: '#361c02',
   darkColor200: '#653504',
   darkColor300: '#934d07',

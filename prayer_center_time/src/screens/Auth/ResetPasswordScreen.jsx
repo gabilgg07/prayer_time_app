@@ -6,33 +6,43 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  useColorScheme,
 } from 'react-native';
 import {AuthContext} from '../../routers/AuthProvider';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import {COLORS} from '../../utils/Colors';
 
 const ResetPasswordScreen = ({navigation}) => {
-  const [isSecurePass, setIsSecurePass] = useState(true);
+  const isDarkMode = useColorScheme() === 'dark';
   const {resetPassword} = useContext(AuthContext);
   const signupValidationSchema = yup.object().shape({
     email: yup
       .string()
-      .required('Boş geçilemez')
-      .email('Geçerli bir email adresi giriniz!'),
+      .required('Boş buraxıla bilməz')
+      .email('Düzgün e-poçt adresi daxil edin!'),
   });
   return (
     <SafeAreaView
-      style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: isDarkMode ? COLORS.darkColor : COLORS.lightColor,
+      }}>
       <View
-        style={{
-          width: '80%',
-          alignItems: 'center',
-          padding: 10,
-          backgroundColor: '#ddd',
-          borderRadius: 30,
-        }}>
-        <Text style={{fontSize: 24}}>Şifre Sıfırlama</Text>
+        style={[
+          styles.formWrapper,
+          {
+            backgroundColor: isDarkMode
+              ? COLORS.darkColor90
+              : COLORS.whiteColor,
+            borderColor: isDarkMode
+              ? COLORS.lightColor200
+              : COLORS.darkColor200,
+          },
+        ]}>
+        <Text style={styles.formTitle}>Şifrə sıfırlama</Text>
         <Formik
           validationSchema={signupValidationSchema}
           initialValues={{email: '', password: '', passwordConfirm: ''}}
@@ -48,35 +58,57 @@ const ResetPasswordScreen = ({navigation}) => {
             <>
               <TextInput
                 name="email"
-                placeholder="Email Adresiniz"
-                style={{
-                  height: 50,
-                  width: '90%',
-                  padding: 10,
-                  margin: 10,
-                  borderColor: '#000',
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  fontSize: 16,
-                }}
+                placeholder="E-poçt ünvanınız"
+                placeholderTextColor={
+                  isDarkMode ? COLORS.darkColor300 : COLORS.lightColor300
+                }
+                style={[
+                  styles.formInput,
+                  {
+                    color: isDarkMode
+                      ? COLORS.lightColor100
+                      : COLORS.darkColor100,
+                  },
+                ]}
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
                 value={values.email}
                 keyboardType="email-address"
               />
               {errors.email && (
-                <Text style={{color: '#f00', fontSize: 14}}>
+                <Text style={{color: COLORS.errorColor, fontSize: 14}}>
                   {errors.email}
                 </Text>
               )}
 
               <View style={{width: '50%'}}>
-                <Button
-                  color="#f00"
+                <TouchableOpacity
                   onPress={handleSubmit}
                   disabled={!isValid}
-                  title="Gönder"
-                />
+                  style={{
+                    backgroundColor: isValid
+                      ? COLORS.mainColor
+                      : isDarkMode
+                      ? COLORS.darkGray
+                      : 'lightgray',
+                    marginTop: 15,
+                    padding: 10,
+                    borderRadius: 15,
+                  }}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      color: isValid
+                        ? COLORS.whiteColor
+                        : isDarkMode
+                        ? 'gray'
+                        : 'darkgray',
+                    }}>
+                    Göndər
+                  </Text>
+                </TouchableOpacity>
               </View>
             </>
           )}

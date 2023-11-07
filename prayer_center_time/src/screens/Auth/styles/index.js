@@ -13,12 +13,13 @@ export default styles = StyleSheet.create({
     padding: 10,
     borderRadius: 30,
     borderWidth: 2,
+    marginVertical: 10,
   },
   formTitle: {fontSize: 24, color: COLORS.mainColor},
   formInput: {
     borderColor: COLORS.darkColor200,
     width: '90%',
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 10,
     margin: 10,
     padding: 10,
@@ -29,7 +30,7 @@ export default styles = StyleSheet.create({
   inputBox: {
     borderColor: COLORS.darkColor200,
     width: '90%',
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 10,
     margin: 10,
     flexDirection: 'row',

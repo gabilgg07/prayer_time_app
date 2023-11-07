@@ -51,9 +51,15 @@ const BottomTabStack = () => {
       />
 
       <Tab.Screen
-        name="SignUpScreen"
+        name="SignUp Screen"
         component={SignUpScreen}
         options={{
+          headerTintColor: COLORS.mainColor,
+          headerStyle: {
+            backgroundColor: isDarkMode
+              ? COLORS.darkColor100
+              : COLORS.lightColor100,
+          },
           tabBarLabel: 'Qeydiyyat',
           tabBarIcon: ({color, size}) => (
             <Icon name="user-plus" color={color} size={size} />
@@ -62,9 +68,15 @@ const BottomTabStack = () => {
       />
 
       <Tab.Screen
-        name="ResetPasswordScreen"
+        name="Reset Password Screen"
         component={ResetPasswordScreen}
         options={{
+          headerTintColor: COLORS.mainColor,
+          headerStyle: {
+            backgroundColor: isDarkMode
+              ? COLORS.darkColor100
+              : COLORS.lightColor100,
+          },
           tabBarLabel: 'Şifrəni Sıfırla',
           tabBarIcon: ({color, size}) => (
             <Icon name="key" color={color} size={size} />

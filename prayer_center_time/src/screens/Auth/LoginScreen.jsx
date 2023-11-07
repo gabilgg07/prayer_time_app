@@ -21,13 +21,13 @@ const LoginScreen = ({navigation}) => {
   const loginValidationSchema = yup.object().shape({
     email: yup
       .string()
-      .required('Boş buraxıla bilmez')
+      .required('Boş buraxıla bilməz')
       .email('Düzgün e-poçt adresi daxil edin!'),
     password: yup
       .string()
-      .required('Boş buraxıla bilmez')
+      .required('Boş buraxıla bilməz')
       .min(6, ({min}) => 'Şifrə ən az ' + min + ' xarakter olmalıdır!')
-      .matches(/\w*[A-Z]\w*/, 'Ən az 1 ədəd böyük hərf istifadə etməlisinizz!')
+      .matches(/\w*[A-Z]\w*/, 'Ən az 1 ədəd böyük hərf istifadə etməlisiniz!')
       .matches(/\w*[a-z]\w*/, 'Ən az 1 ədəd kiçik hərf istifadə etməlisiniz!')
       .matches(/\d/, 'Ən az 1 ədəd rəqəm istifadə etməlisiniz!')
       .matches(
@@ -45,7 +45,9 @@ const LoginScreen = ({navigation}) => {
         style={[
           styles.formWrapper,
           {
-            backgroundColor: isDarkMode ? COLORS.blackColor : COLORS.whiteColor,
+            backgroundColor: isDarkMode
+              ? COLORS.darkColor90
+              : COLORS.whiteColor,
             borderColor: isDarkMode
               ? COLORS.lightColor200
               : COLORS.darkColor200,
